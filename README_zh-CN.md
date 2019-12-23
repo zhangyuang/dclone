@@ -2,7 +2,7 @@
 
 # 下载github仓库中的指定文件夹
 
-使用dclone命令可以方便我们只下载github仓库中的指定文件夹而不是全部的文件,可以大幅度缩短你的下载时间
+dclone使用了最简单的实现去下载github仓库中指定的文件夹依赖git，你可以用它来缩短你的下载速度
 
 ![](./image/time.png)
 
@@ -17,4 +17,4 @@ $ npm i -g dclone
 $ dclone https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable
 ```
 
-![](./image/download.png)
+![](./image/dg.png)

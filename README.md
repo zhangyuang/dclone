@@ -2,7 +2,7 @@ English | [简体中文](./README_zh-CN.md)
 
 # Download specified directory in github
 
-use dclone command to download specified directory in github for cut down download time
+dclone is the simplest way to download specified directory in github depend on git, use dclone command can cut down download time
 
 ![](./image/time.png)
 
@@ -17,4 +17,4 @@ $ npm i -g dclone
 $ dclone https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable
 ```
 
-![](./image/download.png)
+![](./image/dg.png)
