@@ -11,6 +11,38 @@ interface Answers {
 
 const execWithPromise = promisify(exec)
 
+const cloneRoot = async (rootDir: string) => {
+  const spinner = ora(`${rootDir} is cloning`)
+  spinner.start()
+  await execWithPromise(`git clone ${rootDir}.git`)
+  spinner.succeed()
+}
+
+const checkDirExisted = async (dir: string) => {
+  if (fs.existsSync(dir)) {
+    const answers: Answers = await inquirer.prompt([{
+      type: 'confirm',
+      message: `${dir} folder already existed whether delete?`,
+      name: 'delete',
+      default: 'Yes'
+    }])
+    if (answers.delete) {
+      Shell.rm('-rf', dir)
+      console.log(`${dir} folder delete succeed`)
+    } else process.exit()
+  }
+}
+
+const deepCloneDirectory = async (rootDir: string, distDirName: string, branch: string) => {
+  const spinner = ora(`${distDirName} is cloning`)
+  spinner.start()
+  await execWithPromise(`git init && git config core.sparsecheckout true`) // 设置允许克隆子目录
+  await execWithPromise(`echo ${distDirName} > .git/info/sparse-checkout`) // clone 指定文件夹
+  await execWithPromise(`git remote add origin ${rootDir}.git`)
+  await execWithPromise(`git pull origin ${branch}`)
+  spinner.succeed()
+}
+
 const dclone = async (dir?: string) => {
   if (!dir) {
     console.error('please enter the name of directory')
@@ -18,36 +50,15 @@ const dclone = async (dir?: string) => {
   }
   let [rootDir, distDir] = dir.split('tree')
   if (!distDir) {
-    // 说明clone的是根目录
-    const spinner = ora(`${rootDir} is cloning`)
-    spinner.start()
-    await execWithPromise(`git clone ${rootDir}.git`)
-    spinner.succeed()
+    await cloneRoot(rootDir) // 说明clone的是根目录
     return
   }
-  rootDir = rootDir.slice(0, rootDir.length - 1) // 去除最后一个斜杠获取正确的git仓库地址
   const [, branch, ...distDirNameArr] = distDir.split('/')
+  await checkDirExisted(distDirNameArr[0])
+  rootDir = rootDir.slice(0, rootDir.length - 1) // 去除最后一个斜杠获取正确的git仓库地址
   const distDirName = distDirNameArr.join('/')
-  const spinner = ora(`${distDirName} is cloning`)
-  if (fs.existsSync(distDirNameArr[0])) {
-    const answers: Answers = await inquirer.prompt([{
-      type: 'confirm',
-      message: `${distDirNameArr[0]} folder already existed whether delete?`,
-      name: 'delete',
-      default: 'Yes'
-    }])
-    if (answers.delete) {
-      Shell.rm('-rf', distDirNameArr[0])
-      console.log(`${distDirNameArr[0]} folder delete succeed`)
-    } else process.exit()
-  }
-  spinner.start()
-  await execWithPromise(`git init && git config core.sparsecheckout true`) // 设置允许克隆子目录
-  await execWithPromise(`echo ${distDirName} > .git/info/sparse-checkout`) // clone 指定文件夹
-  await execWithPromise(`git remote add origin ${rootDir}.git`)
-  await execWithPromise(`git pull origin ${branch}`)
+  await deepCloneDirectory(rootDir, distDirName, branch) // 深度clone子目录
   Shell.rm('-rf', '.git')
-  spinner.succeed()
   process.exit()
 }
 
