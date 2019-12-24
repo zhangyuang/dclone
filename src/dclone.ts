@@ -29,13 +29,13 @@ const dclone = async (dir?: string) => {
   if (fs.existsSync(distDirNameArr[0])) {
     const answers: Answers = await inquirer.prompt([{
       type: 'confirm',
-      message: `${distDir} already existed whether delete?`,
+      message: `${distDirNameArr[0]} folder already existed whether delete?`,
       name: 'delete',
       default: 'Yes'
     }])
     if (answers.delete) {
-      Shell.rm('-rf', distDirName)
-      console.log(`${distDir} delete succeed`)
+      Shell.rm('-rf', distDirNameArr[0])
+      console.log(`${distDirNameArr[0]} folder delete succeed`)
     } else process.exit()
   }
   execSync(`git init && git config core.sparsecheckout true`) // 设置允许克隆子目录
