@@ -13,11 +13,9 @@ const dclone = async (dir?: string) => {
     console.error('please enter the name of directory')
     return
   }
-  // 当前clone的是否是根目录
-  const isRoot = typeof dir.split('tree')[1] === 'undefined' // tslint:disable-line
-  let rootDir = dir.split('tree')[0]
-  if (isRoot) {
-       // 说明clone的是根目录
+  let [rootDir, distDir] = dir.split('tree')
+  if (!distDir) {
+    // 说明clone的是根目录
     const spinner = ora(`${rootDir} is cloning`)
     spinner.start()
     execSync(`git clone ${rootDir}.git`)
@@ -25,12 +23,10 @@ const dclone = async (dir?: string) => {
     return
   }
   rootDir = rootDir.slice(0, rootDir.length - 1) // 去除最后一个斜杠获取正确的git仓库地址
-  let distDir = dir.split('tree')[1] // 获取目标目录路径
-  const branch = distDir.split('/')[1] // 获取分支名称
-  distDir = dir.split('tree')[1].replace(`/${branch}`, '') // 路径移除分支名
-  const distDirName = distDir.split('/')[1] // clone 到本地的文件夹名称
-  const spinner = ora(`${distDir} is cloning`)
-  if (fs.existsSync(distDirName)) {
+  const [, branch, ...distDirNameArr] = distDir.split('/')
+  const distDirName = distDirNameArr.join('/')
+  const spinner = ora(`${distDirName} is cloning`)
+  if (fs.existsSync(distDirNameArr[0])) {
     const answers: Answers = await inquirer.prompt([{
       type: 'confirm',
       message: `${distDir} already existed whether delete?`,
@@ -43,7 +39,7 @@ const dclone = async (dir?: string) => {
     } else process.exit()
   }
   execSync(`git init && git config core.sparsecheckout true`) // 设置允许克隆子目录
-  execSync(`echo ${distDir} > .git/info/sparse-checkout`) // clone 指定文件夹
+  execSync(`echo ${distDirName} > .git/info/sparse-checkout`) // clone 指定文件夹
   execSync(`git remote add origin ${rootDir}.git`)
   spinner.start()
   execSync(`git pull origin ${branch}`)

@@ -20,7 +20,7 @@ jest.mock('inquirer', () => ({
 }))
 describe('test dclone', () => {
   beforeEach(() => {
-    Shell.mkdir('-p','temp/example')
+    Shell.mkdir('-p','temp')
     Shell.cd('temp')
   })
   test('not input dir should exit', async () => {
@@ -28,11 +28,13 @@ describe('test dclone', () => {
     expect(mockError).toBeCalled()
   })
   test('expect ssr-with-loadable can be download', async () => {
+    Shell.mkdir('-p','example')
     await dclone('https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable')
     expect(fs.existsSync('./example')).toBe(true)
     expect(fs.existsSync('./example/ssr-with-loadable')).toBe(true)
   })
   test('process.exit should be called', async () => {
+    Shell.mkdir('-p','example')
     await dclone('https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable')
     expect(mockExit).toBeCalled()
   })
