@@ -3,7 +3,7 @@ English | [简体中文](./README_zh-CN.md)
 # Download specified directory in github
 
 <a href="https://circleci.com/gh/ykfe"><img src="https://img.shields.io/circleci/build/github/ykfe/dclone/master.svg" alt="Build Status"></a>
-<a href="https://codecov.io/gh/ykfe/dclone"><img src="https://img.shields.io/codecov/c/github/ykfe/dclone" alt="Coverage Status"></a>
+<a href="https://codecov.io/gh/ykfe/dclone"><img src="https://codecov.io/gh/ykfe/dclone/branch/master/graph/badge.svg" alt="Coverage Status"></a>
 
 dclone is the simplest way to download specified directory in github depend on git, use dclone command can cut down download time
 
