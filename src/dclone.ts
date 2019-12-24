@@ -1,12 +1,15 @@
 import fs from 'fs'
 import Shell from 'shelljs'
+import { promisify } from 'util'
 import ora from 'ora'
 import inquirer from 'inquirer'
-import { execSync }from 'child_process'
+import { exec }from 'child_process'
 
 interface Answers {
   delete?: boolean
 }
+
+const execWithPromise = promisify(exec)
 
 const dclone = async (dir?: string) => {
   if (!dir) {
@@ -18,7 +21,7 @@ const dclone = async (dir?: string) => {
     // 说明clone的是根目录
     const spinner = ora(`${rootDir} is cloning`)
     spinner.start()
-    execSync(`git clone ${rootDir}.git`)
+    await execWithPromise(`git clone ${rootDir}.git`)
     spinner.succeed()
     return
   }
@@ -38,11 +41,11 @@ const dclone = async (dir?: string) => {
       console.log(`${distDirNameArr[0]} folder delete succeed`)
     } else process.exit()
   }
-  execSync(`git init && git config core.sparsecheckout true`) // 设置允许克隆子目录
-  execSync(`echo ${distDirName} > .git/info/sparse-checkout`) // clone 指定文件夹
-  execSync(`git remote add origin ${rootDir}.git`)
   spinner.start()
-  execSync(`git pull origin ${branch}`)
+  await execWithPromise(`git init && git config core.sparsecheckout true`) // 设置允许克隆子目录
+  await execWithPromise(`echo ${distDirName} > .git/info/sparse-checkout`) // clone 指定文件夹
+  await execWithPromise(`git remote add origin ${rootDir}.git`)
+  await execWithPromise(`git pull origin ${branch}`)
   Shell.rm('-rf', '.git')
   spinner.succeed()
   process.exit()
