@@ -48,11 +48,13 @@ const dclone = async (dir?: string) => {
     console.error('please enter the name of directory')
     return
   }
-  let [rootDir, distDir] = dir.split('tree')
-  if (!distDir) {
+  let [rootDir, ...distDirArr] = dir.split('tree')
+  if (distDirArr.length === 0) {
     await cloneRoot(rootDir) // 说明clone的是根目录
     return
   }
+  const distDir = distDirArr.length > 1 ? distDirArr.join('tree') : distDirArr.join('') // 修复url中存在多个tree的情况，只以第一个作为分割点
+  console.log(distDir)
   const [, branch, ...distDirNameArr] = distDir.split('/')
   await checkDirExisted(distDirNameArr[0])
   rootDir = rootDir.slice(0, rootDir.length - 1) // 去除最后一个斜杠获取正确的git仓库地址

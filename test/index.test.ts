@@ -2,7 +2,7 @@ import fs from 'fs'
 import Shell from 'shelljs'
 import { dclone } from '../src/dclone'
 
-jest.setTimeout(10000)
+jest.setTimeout(100000)
 // @ts-ignore
 const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {
     //
@@ -38,9 +38,14 @@ describe('test dclone', () => {
     await dclone('https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable')
     expect(mockExit).toBeCalled()
   })
-  test('rootDir can be git clone', async () => {
+  test('rootDir can be git clone ', async () => {
     await dclone('https://github.com/ykfe/egg-react-ssr')
     expect(fs.existsSync('./egg-react-ssr')).toBe(true)
+  })
+  test('url has multiply tree can clone succeed', async () => {
+    await dclone('https://github.com/ReactiveX/rxjs/tree/experiment-trex/doc/decision-tree-widget')
+    expect(fs.existsSync('./doc')).toBe(true)
+    expect(fs.existsSync('./doc/decision-tree-widget')).toBe(true)
   })
   afterEach(() => {
     Shell.cd('../')
