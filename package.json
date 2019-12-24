@@ -43,6 +43,7 @@
     "@types/optimist": "^0.0.29",
     "@types/shelljs": "^0.8.6",
     "codecov": "^3.6.1",
+    "jest": "^24.9.0",
     "pre-commit": "^1.2.2",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.5.4",
