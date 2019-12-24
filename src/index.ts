@@ -37,13 +37,13 @@ interface Answers {
   if (fs.existsSync(distDirName)) {
     const answers: Answers = await inquirer.prompt([{
       type: 'confirm',
-      message: `${distDirName} already existed whether delete?`,
+      message: `${distDir} already existed whether delete?`,
       name: 'delete',
       default: 'Yes'
     }])
     if (answers.delete) {
       Shell.rm('-rf', distDirName)
-      console.log(`${distDirName} delete succeed`)
+      console.log(`${distDir} delete succeed`)
     } else process.exit()
   }
   execSync(`git init && git config core.sparsecheckout true`) // 设置允许克隆子目录
