@@ -42,13 +42,17 @@ describe('test dclone', () => {
     await dclone('https://github.com/ykfe/egg-react-ssr')
     expect(fs.existsSync('./egg-react-ssr')).toBe(true)
   })
-  test('url has multiply tree can clone succeed', async () => {
+  test('url has multiply tree can clone succeed', async (done) => {
     await dclone('https://github.com/ReactiveX/rxjs/tree/experiment-trex/doc/decision-tree-widget')
     expect(fs.existsSync('./doc')).toBe(true)
     expect(fs.existsSync('./doc/decision-tree-widget')).toBe(true)
+    done()
   })
   afterEach(() => {
     Shell.cd('../')
     Shell.rm('-rf','temp')
+  })
+  afterAll(async (done) => {
+    done()
   })
 })
