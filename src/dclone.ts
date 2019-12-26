@@ -75,5 +75,6 @@ const dclone = async (dir?: string) => {
 }
 
 export {
-  dclone
+  dclone,
+  httpToSSH
 }

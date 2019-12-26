@@ -1,6 +1,6 @@
 import fs from 'fs'
 import Shell from 'shelljs'
-import { dclone } from '../src/dclone'
+import { dclone, httpToSSH } from '../src/dclone'
 
 jest.setTimeout(100000)
 // @ts-ignore
@@ -55,4 +55,9 @@ describe('test dclone', () => {
   afterAll(async (done) => {
     done()
   })
+})
+
+describe('test httpToSSH', () => {
+  const res = httpToSSH('http://gitlab.xx.com/xxx/xxxx', 'http://gitlab.xx.com/xxx/xxxx/tree/master/xxx')
+  expect(res).toEqual('git@gitlab.xx.com:xxx/xxxx')
 })
