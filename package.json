@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ykfe/onlyClone.git"
+    "url": "git+https://github.com/ykfe/dclone.git"
   },
   "keywords": [
     "git",
@@ -24,9 +24,9 @@
   "author": "zhangyuang",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ykfe/onlyClone/issues"
+    "url": "https://github.com/ykfe/dclone/issues"
   },
-  "homepage": "https://github.com/ykfe/onlyClone#readme",
+  "homepage": "https://github.com/ykfe/dclone#readme",
   "pre-commit": [
     "lint"
   ],
