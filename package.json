@@ -38,17 +38,17 @@
   },
   "devDependencies": {
     "@types/inquirer": "^6.5.0",
-    "@types/jest": "^24.0.18",
-    "@types/node": "^12.12.21",
+    "@types/jest": "^25.1.2",
+    "@types/node": "^13.7.1",
     "@types/optimist": "^0.0.29",
     "@types/shelljs": "^0.8.6",
     "codecov": "^3.6.1",
-    "jest": "^24.9.0",
+    "jest": "^25.1.0",
     "pre-commit": "^1.2.2",
-    "ts-jest": "^24.0.2",
+    "ts-jest": "^25.2.0",
     "ts-node": "^8.5.4",
-    "tslint": "^5.17.0",
-    "tslint-config-standard": "^8.0.1",
+    "tslint": "^6.0.0",
+    "tslint-config-standard": "^9.0.0",
     "typescript": "^3.7.4"
   }
 }
