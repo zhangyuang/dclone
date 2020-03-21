@@ -2,7 +2,7 @@
   "name": "dclone",
   "version": "1.1.4",
   "description": "only clone part directories in git repo",
-  "main": "bin/index.js",
+  "main": "bin/init.js",
   "scripts": {
     "test": "jest --coverage && codecov",
     "lint": "tslint -c tslint.json -p .",
