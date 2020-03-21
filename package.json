@@ -1,6 +1,6 @@
 {
   "name": "dclone",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "only clone part directories in git repo",
   "main": "bin/init.js",
   "scripts": {
