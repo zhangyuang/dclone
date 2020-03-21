@@ -22,3 +22,7 @@ process.on('SIGINT', () => {
   console.log('进程中途终止')
   process.exit()
 })
+
+export {
+  dclone
+}
