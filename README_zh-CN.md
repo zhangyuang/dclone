@@ -33,4 +33,11 @@ $ npm i -g dclone
 $ dclone https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable
 ```
 
+你也可以在文件中直接导入
+
+```js
+import { dclone } from 'dclone'
+
+await dclone('https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable')
+```
 ![](./image/dg.png)

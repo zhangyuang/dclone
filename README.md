@@ -33,4 +33,12 @@ $ npm i -g dclone
 $ dclone https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable
 ```
 
+You can also import dclone in files direct
+
+```js
+import { dclone } from 'dclone'
+
+await dclone('https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable')
+```
+
 ![](./image/dg.png)
