@@ -6,6 +6,13 @@ import ora from 'ora'
 import inquirer from 'inquirer'
 import { Options } from './interface/options'
 
+const CLONE_SILENT = process.env.CLONE_SILENT
+
+function log (msg: string) {
+  if (!CLONE_SILENT) {
+    console.log(msg)
+  }
+}
 interface Answers {
   delete?: boolean
 }
@@ -13,10 +20,10 @@ interface Answers {
 const execWithPromise = promisify(exec)
 
 const cloneRoot = async (rootDir: string) => {
-  const spinner = ora(`${rootDir} is cloning`)
-  spinner.start()
+  const spinner = !CLONE_SILENT && ora(`${rootDir} is cloning`)
+  spinner && spinner.start()
   await execWithPromise(`git clone ${rootDir}.git`)
-  spinner.succeed()
+  spinner && spinner.succeed()
 }
 
 const checkDirExisted = async (dir: string) => {
@@ -29,7 +36,7 @@ const checkDirExisted = async (dir: string) => {
     }])
     if (answers.delete) {
       Shell.rm('-rf', dir)
-      console.log(`${dir} folder delete succeed`)
+      log(`${dir} folder delete succeed`)
     } else process.exit()
   }
 }
@@ -73,7 +80,6 @@ const dclone = async (options: Options) => {
   const distDirName = distDirNameArr.join('/')
   await deepCloneDirectory(rootDir, distDirName, branch) // 深度clone子目录
   Shell.rm('-rf', '.git')
-  process.exit()
 }
 
 export {
