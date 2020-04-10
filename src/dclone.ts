@@ -8,11 +8,6 @@ import { Options } from './interface/options'
 
 const CLONE_SILENT = process.env.CLONE_SILENT
 
-function log (msg: string) {
-  if (!CLONE_SILENT) {
-    console.log(msg)
-  }
-}
 interface Answers {
   delete?: boolean
 }
@@ -36,7 +31,7 @@ const checkDirExisted = async (dir: string) => {
     }])
     if (answers.delete) {
       Shell.rm('-rf', dir)
-      log(`${dir} folder delete succeed`)
+      console.log(`${dir} folder delete succeed`)
     } else process.exit()
   }
 }
