@@ -1,9 +1,10 @@
 import fs from 'fs'
 import Shell from 'shelljs'
+import { exec }from 'child_process'
 import { promisify } from 'util'
 import ora from 'ora'
 import inquirer from 'inquirer'
-import { exec }from 'child_process'
+import { Options } from './interface/options'
 
 interface Answers {
   delete?: boolean
@@ -54,15 +55,16 @@ const httpToSSH = (rootDir: string, dir: string) => {
   res = res.substring(0, index) + ':' + res.substring(index + 1)
   return 'git@' + res
 }
-const dclone = async (dir?: string) => {
+const dclone = async (options: Options) => {
+  const { dir, http } = options
   if (!dir) {
     console.error('please enter the name of directory')
     return
   }
   let [rootDir, ...distDirArr] = dir.split('tree')
   rootDir = httpToSSH(rootDir, dir)
-  if (distDirArr.length === 0) {
-    await cloneRoot(rootDir) // 说明clone的是根目录
+  if (distDirArr.length === 0 || http) {
+    await cloneRoot(rootDir) // 根目录直接使用git clone命令
     return
   }
   const distDir = distDirArr.length > 1 ? distDirArr.join('tree') : distDirArr.join('') // 修复url中存在多个tree的情况，只以第一个作为分割点
