@@ -5,14 +5,11 @@ import { promisify } from 'util'
 import inquirer from 'inquirer'
 import { Options } from './interface/options'
 
-const CLONE_SILENT = process.env.CLONE_SILENT
-
 interface Answers {
   delete?: boolean
 }
 
 const execWithPromise = promisify(exec)
-const spawnWithPromise = promisify(spawn)
 
 const cloneRoot = async (rootDir: string) => {
   await execWithPromise(`git clone ${rootDir}.git`)
@@ -37,11 +34,18 @@ const deepCloneDirectory = async (rootDir: string, distDirName: string, branch: 
   await execWithPromise(`git init && git config core.sparsecheckout true`) // 设置允许克隆子目录
   await execWithPromise(`echo ${distDirName} > .git/info/sparse-checkout`) // clone 指定文件夹
   await execWithPromise(`git remote add origin ${rootDir}.git`)
-  // @ts-ignore
-  const { stdout } = await spawnWithPromise('git', ['pull','origin', `${branch}`], {
-    stdio: 'inherit'
+
+  return new Promise(resolve => {
+    const child = spawn('git', ['pull','origin', `${branch}`], {
+      stdio: 'inherit'
+    })
+    child.on('stdout',data => {
+      console.log(data)
+    })
+    child.on('close',() => {
+      resolve()
+    })
   })
-  stdout.toString()
 }
 
 const httpToSSH = (rootDir: string, dir: string) => {
