@@ -38,7 +38,9 @@ You can also import dclone in files direct
 ```js
 import { dclone } from 'dclone'
 
-await dclone('https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable')
+await dclone({
+  dir: 'https://github.com/ykfe/egg-react-ssr/tree/dev/example/ssr-with-loadable'
+})
 ```
 
 ![](./image/dg.png)
