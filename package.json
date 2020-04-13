@@ -7,7 +7,7 @@
     "test": "jest --coverage && codecov",
     "lint": "tslint -c tslint.json -p .",
     "lint:fix": "tslint -c tslint.json -p . --fix",
-    "build": "tsc -p ./tsconfig.json --sourceMap false",
+    "build": "tsc -p ./tsconfig.json --inlineSourceMap false",
     "dev": "tsc -w -p ./tsconfig.json"
   },
   "bin": {
@@ -33,7 +33,6 @@
   "dependencies": {
     "inquirer": "^7.0.1",
     "optimist": "^0.6.1",
-    "ora": "^4.0.3",
     "shelljs": "^0.8.3"
   },
   "devDependencies": {

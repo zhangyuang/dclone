@@ -1,8 +1,7 @@
 import fs from 'fs'
 import Shell from 'shelljs'
-import { exec }from 'child_process'
+import { exec, spawn }from 'child_process'
 import { promisify } from 'util'
-import ora from 'ora'
 import inquirer from 'inquirer'
 import { Options } from './interface/options'
 
@@ -13,12 +12,10 @@ interface Answers {
 }
 
 const execWithPromise = promisify(exec)
+const spawnWithPromise = promisify(spawn)
 
 const cloneRoot = async (rootDir: string) => {
-  const spinner = !CLONE_SILENT && ora(`${rootDir} is cloning`)
-  spinner && spinner.start()
   await execWithPromise(`git clone ${rootDir}.git`)
-  spinner && spinner.succeed()
 }
 
 const checkDirExisted = async (dir: string) => {
@@ -37,13 +34,14 @@ const checkDirExisted = async (dir: string) => {
 }
 
 const deepCloneDirectory = async (rootDir: string, distDirName: string, branch: string) => {
-  const spinner = ora(`${distDirName} is cloning`)
-  spinner.start()
   await execWithPromise(`git init && git config core.sparsecheckout true`) // 设置允许克隆子目录
   await execWithPromise(`echo ${distDirName} > .git/info/sparse-checkout`) // clone 指定文件夹
   await execWithPromise(`git remote add origin ${rootDir}.git`)
-  await execWithPromise(`git pull origin ${branch}`)
-  spinner.succeed()
+  // @ts-ignore
+  const { stdout } = await spawnWithPromise('git', ['pull','origin', `${branch}`], {
+    stdio: 'inherit'
+  })
+  stdout.toString()
 }
 
 const httpToSSH = (rootDir: string, dir: string) => {
