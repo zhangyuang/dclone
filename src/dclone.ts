@@ -12,7 +12,17 @@ interface Answers {
 const execWithPromise = promisify(exec)
 
 const cloneRoot = async (rootDir: string) => {
-  await execWithPromise(`git clone ${rootDir}.git`)
+  return new Promise(resolve => {
+    const child = spawn('git', ['clone', `${rootDir}.git`], {
+      stdio: 'inherit'
+    })
+    child.on('stdout',data => {
+      console.log(data)
+    })
+    child.on('close',() => {
+      resolve()
+    })
+  })
 }
 
 const checkDirExisted = async (dir: string) => {
