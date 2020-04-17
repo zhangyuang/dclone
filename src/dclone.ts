@@ -79,6 +79,11 @@ const dclone = async (options: Options) => {
   rootDir = httpToSSH(rootDir, dir)
   if (distDirArr.length === 0 || http) {
     await cloneRoot(rootDir) // 根目录直接使用git clone命令
+    const regRes = /[\s\S]*\/([\s\S]+)\.git/.exec(rootDir)
+    const dirName = regRes && regRes[1]
+    if (dirName) {
+      Shell.rm('-rf', `./${dirName}/.git`) // 删除.git文件夹
+    }
     return
   }
   const distDir = distDirArr.length > 1 ? distDirArr.join('tree') : distDirArr.join('') // 修复url中存在多个tree的情况，只以第一个作为分割点
