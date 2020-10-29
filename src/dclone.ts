@@ -41,9 +41,15 @@ const checkDirExisted = async (dir: string) => {
 }
 
 const deepCloneDirectory = async (rootDir: string, distDirName: string, branch: string) => {
-  await execWithPromise(`git init && git config core.sparsecheckout true`) // 设置允许克隆子目录
-  await execWithPromise(`echo ${distDirName} > .git/info/sparse-checkout`) // clone 指定文件夹
-  await execWithPromise(`git remote add origin ${rootDir}.git`)
+  await execWithPromise(`git init && git config core.sparsecheckout true`, {
+    cwd: process.cwd()
+  }) // 设置允许克隆子目录
+  await execWithPromise(`echo ${distDirName} > .git/info/sparse-checkout`, {
+    cwd: process.cwd()
+  }) // clone 指定文件夹
+  await execWithPromise(`git remote add origin ${rootDir}.git`, {
+    cwd: process.cwd()
+  })
 
   return new Promise(resolve => {
     const child = spawn('git', ['pull','origin', `${branch}`], {
