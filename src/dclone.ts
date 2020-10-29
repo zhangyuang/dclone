@@ -53,7 +53,8 @@ const deepCloneDirectory = async (rootDir: string, distDirName: string, branch: 
 
   return new Promise(resolve => {
     const child = spawn('git', ['pull','origin', `${branch}`], {
-      stdio: 'inherit'
+      stdio: 'inherit',
+      cwd: process.cwd()
     })
     child.on('stdout',data => {
       console.log(data)
