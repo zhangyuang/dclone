@@ -1,6 +1,6 @@
 import fs from 'fs'
 import Shell from 'shelljs'
-import { exec, spawn }from 'child_process'
+import { exec, spawn } from 'child_process'
 import { promisify } from 'util'
 import inquirer from 'inquirer'
 import { Options } from './interface/options'
@@ -9,6 +9,12 @@ interface Answers {
   delete?: boolean
 }
 
+process.on('SIGINT', () => {
+  Shell.rm('-rf', '.git')
+  console.log('进程中途终止')
+  process.exit()
+})
+
 const execWithPromise = promisify(exec)
 
 const cloneRoot = async (rootDir: string) => {
@@ -16,10 +22,10 @@ const cloneRoot = async (rootDir: string) => {
     const child = spawn('git', ['clone', `${rootDir}.git`], {
       stdio: 'inherit'
     })
-    child.on('stdout',data => {
+    child.on('stdout', data => {
       console.log(data)
     })
-    child.on('close',() => {
+    child.on('close', () => {
       resolve()
     })
   })
@@ -52,14 +58,14 @@ const deepCloneDirectory = async (rootDir: string, distDirName: string, branch: 
   })
 
   return new Promise(resolve => {
-    const child = spawn('git', ['pull','origin', `${branch}`], {
+    const child = spawn('git', ['pull', 'origin', `${branch}`], {
       stdio: 'inherit',
       cwd: process.cwd()
     })
-    child.on('stdout',data => {
+    child.on('stdout', data => {
       console.log(data)
     })
-    child.on('close',() => {
+    child.on('close', () => {
       resolve()
     })
   })
