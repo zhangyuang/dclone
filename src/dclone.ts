@@ -19,7 +19,7 @@ const execWithPromise = promisify(exec)
 
 const cloneRoot = async (rootDir: string) => {
   return new Promise(resolve => {
-    const child = spawn('git', ['clone', `${rootDir}.git`], {
+    const child = spawn('git', ['clone', '--depth=1', `${rootDir}.git`], {
       stdio: 'inherit'
     })
     child.on('stdout', data => {
